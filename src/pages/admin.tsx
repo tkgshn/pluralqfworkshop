@@ -24,9 +24,9 @@ export default function Admin() {
         });
 
     return (
-        <div>
+        <div className="container">
             <h1>Admin Page</h1>
-            <table>
+            <table className="donations-table">
                 <thead>
                     <tr>
                         <th>Project ID</th>
@@ -46,6 +46,26 @@ export default function Admin() {
                     ))}
                 </tbody>
             </table>
+            <style jsx>{`
+            .container {
+          max-width: 960px;
+          margin: 0 auto;
+          padding: 0 15px;
+        }
+        .donations-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        .donations-table th, .donations-table td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: left;
+        }
+        .donations-table th {
+          background-color: #f2f2f2;
+          color: black;
+        }
+      `}</style>
         </div>
     );
 }

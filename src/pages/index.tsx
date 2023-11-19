@@ -1,6 +1,30 @@
 import { useState, useEffect } from 'react';
 import { getProjects, Project } from "./api/projects";
 import { GetServerSideProps } from 'next';
+import {
+  SimpleGrid,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Heading,
+  Text,
+  Button,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Container,
+  Progress,
+  Stack,
+  StackDivider,
+  Box,
+  Spacer,
+  Center,
+} from "@chakra-ui/react";
+
+
 
 interface Props {
   projects: Project[];
@@ -61,58 +85,92 @@ export default function Home({ projects = [], budget, userId }: Props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ user_id, donations }),
+    }).then(response => {
+      if (response.ok) {
+        alert('送信成功!');
+      } else {
+        alert('送信失敗。再度試してください。');
+      }
+    }).catch(() => {
+      alert('送信失敗。再度試してください。');
     });
   };
 
   return (
-    <>
-      <h1>Your id is</h1>
-      <p>{userId}</p>
-      <h1>Your budget is</h1>
-      <p><span id="budget">{budget}</span></p>
-      <h1>Projects</h1>
-      <style jsx>{`
-        table, th, td {
-          border: 1px solid black;
-          border-collapse: collapse;
-        }
-      `}</style>
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Donation</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.map((project, index) => (
-            <tr key={index}>
-              <td>{project.title}</td>
-              <td>{project.description}</td>
-              <td>
-                 <input
-                  type="number"
-                  min="0"
-                  id={`donation_${project.id}`}
-                  // 下記のonChangeイベントはdonationのstateを更新するロジックを追加する場所です
-                  onChange={(event) => {
-                    const donationAmount = Number(event.target.value);
-                    setRemainingBudget(budget - donationAmount);
-                  }}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h1>Remaining budget</h1>
-      <p><span id="remaining_budget">{remainingBudget}</span></p>
-      {/* 下記のボタンクリックイベントは寄付を処理するロジックを追加する場所です */}
-      <button id="submit" onClick={() => {
-        submitDonations();
-      }}>Submit</button>
-    </>
+
+    <Container maxW="container.xl" centerContent>
+      <Box maxW="container.md" mx="auto">
+      <Card>
+        <CardHeader>
+          <Heading size='md'>User Information</Heading>
+        </CardHeader>
+        <CardBody>
+          <Stack divider={<StackDivider />} spacing='4'>
+            <Box>
+              <Heading size='xs' textTransform='uppercase'>ID</Heading>
+              <Text pt='2' fontSize='sm'>{userId}</Text>
+            </Box>
+            <Box>
+              <Heading size='xs' textTransform='uppercase'>Budget</Heading>
+              <Text pt='2' fontSize='sm'>{budget}</Text>
+            </Box>
+            <Box>
+              <Heading size='xs' textTransform='uppercase'>Remaining Budget</Heading>
+              <Text pt='2' fontSize='sm'>{remainingBudget}</Text>
+              <Spacer height="10px" />
+              <Progress value={remainingBudget / budget * 100} />
+            </Box>
+          </Stack>
+        </CardBody>
+      </Card>
+
+      <Spacer height="20px" />
+      {/* <Progress value={remainingBudget / budget * 100} /> */}
+      <SimpleGrid spacing={4} templateColumns='repeat(3, 1fr)'>
+        {projects.map((project, index) => (
+          <Card key={index}>
+            <CardHeader>
+              <Heading size='md'>{project.title}</Heading>
+            </CardHeader>
+            <CardBody>
+              <Text>{project.description}</Text>
+            </CardBody>
+            <CardFooter>
+              <NumberInput
+                min={0}
+                id={`donation_${project.id}`}
+                onChange={(valueString) => {
+                  const donationAmount = Number(valueString);
+                  setRemainingBudget(budget - donationAmount);
+                }}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </CardFooter>
+          </Card>
+        ))}
+      </SimpleGrid>
+
+        <Spacer height="20px" />
+
+      </Box>
+      <Center position="fixed" bottom="0" width="100%" p={4} bg="white">
+        <Button
+          id="submit"
+          colorScheme="blue"
+          onClick={() => {
+            submitDonations();
+          }}
+        >
+          Submit
+        </Button>
+      </Center>
+      </Container>
+    // </div>
   );
 }
 
