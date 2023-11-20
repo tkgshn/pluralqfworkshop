@@ -8,18 +8,7 @@ export interface Donation {
     amount: Number;//どれぐらいの額か
 }
 
-// const env = load({
-//     HOST: String,
-//     USER: String,
-//     PASSWORD: String,
-//     DATABASE: String,
-// });
-
 const pool = new Pool({
-    // host: env.HOST,
-    // user: env.USER,
-    // password: env.PASSWORD,
-    // database: env.DATABASE,
     connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false

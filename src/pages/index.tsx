@@ -48,7 +48,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 
 export default function Home({ projects = [], budget, userId }: Props) {
   const [remainingBudget, setRemainingBudget] = useState(budget);
-  // const [donations, setDonations] = useState<number[]>(new Array(projects.length).fill(0));
   const [donations, setDonations] = useState(projects.map(project => ({ id: project.id, amount: 0 })));
 
 
@@ -178,7 +177,6 @@ export default function Home({ projects = [], budget, userId }: Props) {
                 id={`donation_${project.id}`}
                 onChange={(valueString) => {
                   const donationAmount = Number(valueString);
-                  // console.log(donationAmount); // ここを追加
                   handleDonationChange(Number(project.id), donationAmount);
                 }}
               >

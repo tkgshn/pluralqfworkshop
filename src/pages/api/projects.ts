@@ -11,7 +11,7 @@ export interface Project {
 export const getProjects = (): Project[] => {
     const data = fs.readFileSync('projects.json', 'utf8');
     const projects: Project[] = JSON.parse(data);
-    return Object.values(projects); // 修正
+    return Object.values(projects);
 };
 
 // プロジェクトのデータを取得するエンドポイント

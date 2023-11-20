@@ -13,7 +13,7 @@ import {
 interface ProjectResult {
     project_id: string;
     title: string;
-    contributions: String[]; // 追加
+    contributions: String[];
     funded_amount: number;
     donors: String[];
     matched_amount: String[];

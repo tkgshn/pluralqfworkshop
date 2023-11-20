@@ -13,7 +13,7 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const { user_id, donations } = req.body;
-    console.log("donations", donations, "user_id", user_id); // ここを追加
+    console.log("donations", donations, "user_id", user_id);
     const client = await pool.connect();
     try {
         for (const donation of donations) {

@@ -16,6 +16,14 @@ export default async function handler(
     const client = await pool.connect();
     try {
         const queryResult = await client.query('SELECT project_id, SUM(amount) as funded_amount, ARRAY_AGG(amount) as contributions, ARRAY_AGG(user_id) as donors FROM donations WHERE amount > 0 GROUP BY project_id ORDER BY project_id');
+            // | project_id | total_amount | contributions       | donors   |
+            // |------------|--------------|---------------------|----------|
+            // |     1      | 14.00        | { 6.00, 4.00, 4.00} | { 1, 2, 5}|
+            // |     3      | 1.00         | { 1.00}             | { 100}   |
+            // |     5      | 10.00        | { 5.00, 5.00}       | { 1, 2}  |
+            // |     8      | 6.00         | { 6.00}             | { 1}     |
+            // |     9      | 1.00         | { 1.00}             | { 2}     |
+
         const rows = queryResult.rows;
         const projects = getProjects();
         const result = rows.map((row) => {
