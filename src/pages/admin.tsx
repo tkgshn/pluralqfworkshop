@@ -7,12 +7,7 @@ import {
     Th,
     Td,
     Box,
-    Container,
     Spacer,
-    Center,
-    // Avatar,
-    NumberInput,
-    NumberInputField,
 } from "@chakra-ui/react";
 
 interface ProjectResult {
@@ -28,8 +23,6 @@ interface ProjectResult {
 
 export default function Admin() {
     const [donations, setDonations] = useState<ProjectResult[]>([]);
-    // const [matchingPool, setMatchingPool] = useState(1000);
-
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/admin`)
@@ -54,7 +47,7 @@ export default function Admin() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ donations: donations.map(donation => [donation.funded_amount]) }),
+                body: JSON.stringify(donations.map(donation => donation.contributions.map(Number))),
             })
                 .then(response => response.json())
                 .then(data => {
@@ -67,17 +60,9 @@ export default function Admin() {
         }
     }, [donations]);
 
-    // const handleMatchingPoolChange = (event: any) => {
-    //     setMatchingPool(event.target.value);
-    // };
-
     return (
         <>
-        {/* // <Container maxW="container.xl" centerContent>
-        // <Center h="100vh">
-        //     <Box maxW="container.md" mx="auto"> */}
                 <Spacer height="20px" />
-                {/* <Box maxW="100%"> */}
                     <Table size="lg">
                         <Thead>
                             <Tr>
@@ -99,16 +84,11 @@ export default function Admin() {
                                     <Td>{donation.contributions.map(contribution => `$${contribution}`).join(', ')}</Td>
                                     <Td>{donation.donors.join(', ')}</Td>
                                     <Td fontWeight="bold">{donation.funded_amount}</Td>
-                                    {/* <Td>{donation.matched_amount}</Td> */}
                                     <Td>${Math.floor(Number(donation.matched_amount))}</Td>
                                 </Tr>
                             ))}
                         </Tbody>
                     </Table>
-                {/* </Box> */}
-                {/* </div> */}
-        {/* //     </Box>
-        // </Center> */}
             </>
     );
 }

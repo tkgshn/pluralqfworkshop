@@ -4,18 +4,28 @@ export default function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { donations} = req.body;
+    const donations: number[][] = req.body;
+    // const donations = [
+    //     [6, 4, 4],
+    //     [1],
+    //     [5, 5],
+    //     [6],
+    //     [1]
+    // ];
+
     const matchingPool: number = 1000;
-    // const { donations, matchingPool } = req.body;
-    const sqrtSums = donations.map((project: number[]) =>
+
+    let summedSqrts = donations.map((project: number[]) =>
         project.reduce((sum: number, donation: number) => sum + Math.sqrt(donation), 0)
     );
 
-    const totalSqrtSumSquared = sqrtSums.reduce((sum: number, sqrtSum: number) => sum + sqrtSum ** 2, 0);
+    let sumOfSquaredSums = summedSqrts.reduce((sum: number, sqrtSum: number) => sum + sqrtSum ** 2, 0);
 
-    const funding = sqrtSums.map((sqrtSum: number) =>
-        (sqrtSum ** 2 / totalSqrtSumSquared) * matchingPool
+    let matchAmounts = summedSqrts.map((sqrtSum: number) =>
+        (sqrtSum ** 2 / sumOfSquaredSums) * matchingPool
     );
 
-    res.status(200).json(funding);
+    let roundedMatchAmounts = matchAmounts.map((amount: number) => Math.floor(amount));
+
+    res.status(200).json(roundedMatchAmounts);
 }
