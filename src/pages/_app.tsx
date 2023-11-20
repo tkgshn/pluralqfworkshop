@@ -1,20 +1,19 @@
-// import '@/styles/globals.css'
-// import type { AppProps } from 'next/app'
-
-// export default function App({ Component, pageProps }: AppProps) {
-//   return <Component {...pageProps} />
-// }
-
 import * as React from "react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, CSSReset, Box, Container } from '@chakra-ui/react';
 import { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
-      <Component {...pageProps} />
+      <CSSReset />
+      <Container maxW="container.xl" centerContent>
+        <Box maxW="container.md" mx="auto">
+          <Component {...pageProps} />
+        </Box>
+      </Container>
     </ChakraProvider>
   );
 }
+
 
 export default MyApp;

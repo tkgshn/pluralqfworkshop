@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getProjects, Project } from "./api/projects";
 import { GetServerSideProps } from 'next';
+
 import {
   SimpleGrid,
   Card,
@@ -15,14 +16,15 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  Container,
   Progress,
   Stack,
   StackDivider,
-  Box,
   Spacer,
+  Box,
   Center,
+  Tooltip,
 } from "@chakra-ui/react";
+
 
 
 
@@ -46,9 +48,32 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 
 export default function Home({ projects = [], budget, userId }: Props) {
   const [remainingBudget, setRemainingBudget] = useState(budget);
+  // const [donations, setDonations] = useState<number[]>(new Array(projects.length).fill(0));
+  const [donations, setDonations] = useState(projects.map(project => ({ id: project.id, amount: 0 })));
+
+
+  const handleDonationChange = (projectId: number, amount: number) => {
+
+    const newDonations = donations.map(donation =>
+      Number(donation.id) === projectId ? { ...donation, amount: amount } : donation
+    );
+
+    const totalDonations = newDonations.reduce((total, donation) => total + donation.amount, 0);
+
+
+
+    if (totalDonations > budget) {
+      alert('予算の上限に達しました');
+      amount = budget - (totalDonations - amount);
+    }
+
+    setDonations(newDonations);
+    setRemainingBudget(budget - totalDonations);
+  };
 
   useEffect(() => {
     const inputs = document.querySelectorAll('input[type="number"]');
+
     inputs.forEach((input) => {
       (input as HTMLInputElement).addEventListener('input', function (this: HTMLInputElement) {
         let total = 0;
@@ -67,26 +92,40 @@ export default function Home({ projects = [], budget, userId }: Props) {
         }
       });
     });
+
   }, []);
 
   const submitDonations = () => {
-    const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input[type="number"]'));
-    const donations = inputs.map(input => ({
-      id: input.id.replace('donation_', ''),
-      amount: Number(input.value)
-    }));
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const user_id = urlParams.get('user_id');
+    const donationData = {
+      user_id: userId,
+      donations
+    };
 
     fetch('/api/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ user_id, donations }),
+
+      body: JSON.stringify(donationData),
     }).then(response => {
       if (response.ok) {
+        console.log("donationData", donationData);
+        // こんな感じのリクエストを送りたい
+        // {
+        //   "user_id": 1,
+        //     "donations": [
+        //       {
+        //         "id": 1,
+        //         "amount": 10
+        //       },
+        //       {
+        //         "id": 3,
+        //         "amount": 20
+        //       }
+        //     ]
+        // }
         alert('送信成功!');
       } else {
         alert('送信失敗。再度試してください。');
@@ -97,25 +136,24 @@ export default function Home({ projects = [], budget, userId }: Props) {
   };
 
   return (
-
-    <Container maxW="container.xl" centerContent>
-      <Box maxW="container.md" mx="auto">
+    <>
+      <Spacer height="20px" />
       <Card>
         <CardHeader>
-          <Heading size='md'>User Information</Heading>
+          <Heading size='md'>User Information: Scaned by QR Code</Heading>
         </CardHeader>
         <CardBody>
           <Stack divider={<StackDivider />} spacing='4'>
             <Box>
-              <Heading size='xs' textTransform='uppercase'>ID</Heading>
+              <Heading size='xs' textTransform='uppercase'>User ID</Heading>
               <Text pt='2' fontSize='sm'>{userId}</Text>
             </Box>
             <Box>
-              <Heading size='xs' textTransform='uppercase'>Budget</Heading>
+              <Heading size='xs' textTransform='uppercase'>Your Budget</Heading>
               <Text pt='2' fontSize='sm'>{budget}</Text>
             </Box>
             <Box>
-              <Heading size='xs' textTransform='uppercase'>Remaining Budget</Heading>
+              <Heading size='xs' textTransform='uppercase'>Your Remaining Budget</Heading>
               <Text pt='2' fontSize='sm'>{remainingBudget}</Text>
               <Spacer height="10px" />
               <Progress value={remainingBudget / budget * 100} />
@@ -125,7 +163,6 @@ export default function Home({ projects = [], budget, userId }: Props) {
       </Card>
 
       <Spacer height="20px" />
-      {/* <Progress value={remainingBudget / budget * 100} /> */}
       <SimpleGrid spacing={4} templateColumns='repeat(3, 1fr)'>
         {projects.map((project, index) => (
           <Card key={index}>
@@ -141,7 +178,8 @@ export default function Home({ projects = [], budget, userId }: Props) {
                 id={`donation_${project.id}`}
                 onChange={(valueString) => {
                   const donationAmount = Number(valueString);
-                  setRemainingBudget(budget - donationAmount);
+                  // console.log(donationAmount); // ここを追加
+                  handleDonationChange(Number(project.id), donationAmount);
                 }}
               >
                 <NumberInputField />
@@ -155,24 +193,22 @@ export default function Home({ projects = [], budget, userId }: Props) {
         ))}
       </SimpleGrid>
 
-        <Spacer height="20px" />
+      <Spacer height="20px" />
 
-      </Box>
-      <Center position="fixed" bottom="0" width="100%" p={4} bg="white">
-        <Button
-          id="submit"
-          colorScheme="blue"
-          onClick={() => {
-            submitDonations();
-          }}
-        >
-          Submit
-        </Button>
+      <Center position="relative" bottom="0" width="100%" p={4} bg="white">
+        <Tooltip label="Click to submit your donations" placement="top">
+          <Button
+            id="submit"
+            colorScheme="blue"
+            onClick={() => {
+              submitDonations();
+            }}
+          >
+            Submit
+          </Button>
+        </Tooltip>
       </Center>
-      </Container>
-    // </div>
+
+    </>
   );
 }
-
-// この例では、サーバーサイドでのデータ取得方法は省略していますが、
-// 実際には getServerSideProps または getStaticProps を使用してデータを取得することになります。

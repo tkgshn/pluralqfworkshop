@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Pool } from 'pg'; //postgressを動かすために必要
-import { Donation } from './donations';
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -14,6 +13,7 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const { user_id, donations } = req.body;
+    console.log("donations", donations, "user_id", user_id); // ここを追加
     const client = await pool.connect();
     try {
         for (const donation of donations) {

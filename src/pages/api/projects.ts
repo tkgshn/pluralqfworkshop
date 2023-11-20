@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Pool } from 'pg';
 import fs from 'fs';
 
 
