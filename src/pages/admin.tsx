@@ -29,9 +29,6 @@ interface ProjectResult {
 export default function Admin() {
     const [donations, setDonations] = useState<ProjectResult[]>([]);
     const [sortedDonations, setSortedDonations] = useState<ProjectResult[]>([]);
-    const [sortColumn, setSortColumn] = useState<string>('project_id');
-    const [sortOrder, setSortOrder] = useState<string>('asc');
-
 
     const sortTable = (column: string, order: string) => {
         const sorted = [...donations].sort((a, b) => {
@@ -97,7 +94,7 @@ export default function Admin() {
                     <Tr>
                         <Th>
                             <Menu>
-                                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                                <MenuButton as={Button} rightIcon={<ChevronDownIcon />} variant="unstyled">
                                     Projct ID
                                 </MenuButton>
                                 <MenuList>
@@ -112,7 +109,7 @@ export default function Admin() {
                         <Th>Funded Amount</Th>
                         <Th>
                             <Menu>
-                                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                                <MenuButton as={Button} rightIcon={<ChevronDownIcon />} variant="unstyled">
                                     Match Amount
                                 </MenuButton>
                                 <MenuList>
