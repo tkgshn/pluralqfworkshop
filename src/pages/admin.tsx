@@ -29,6 +29,9 @@ interface ProjectResult {
 export default function Admin() {
     const [donations, setDonations] = useState<ProjectResult[]>([]);
     const [sortedDonations, setSortedDonations] = useState<ProjectResult[]>([]);
+    const [sortColumn, setSortColumn] = useState<string>('project_id');
+    const [sortOrder, setSortOrder] = useState<string>('asc');
+
 
     const sortTable = (column: string, order: string) => {
         const sorted = [...donations].sort((a, b) => {
@@ -52,34 +55,38 @@ export default function Admin() {
             })
             .then(data => {
                 setDonations(data);
-                setSortedDonations(data);
-            }
-
-            )
+                return data; // 次のthenブロックにデータを渡す
+            })
+            .then(data => {
+                // ここでmatched_amountの計算を行う
+                if (data.length > 0) {
+                    return fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/qf-calculation`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data.map((donation: ProjectResult) => donation.contributions.map(Number))),
+                    })
+                        .then(response => response.json())
+                        .then(matchedData => {
+                            return data.map((donation: ProjectResult, index: number) => ({
+                                ...donation,
+                                matched_amount: matchedData[index]
+                            }));
+                        });
+                } else {
+                    return [];
+                }
+            })
+            .then(updatedDonations => {
+                // 更新されたdonationsで状態を更新
+                setDonations(updatedDonations);
+                setSortedDonations(updatedDonations);
+            })
             .catch(error => {
                 console.error(error);
             });
     }, []);
-
-    useEffect(() => {
-        if (donations.length > 0) {
-            fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/qf-calculation`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(donations.map(donation => donation.contributions.map(Number))),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    const updatedDonations = donations.map((donation, index) => ({
-                        ...donation,
-                        matched_amount: data[index]
-                    }));
-                    setDonations(updatedDonations);
-                });
-        }
-    }, [donations]);
 
 
     return (
