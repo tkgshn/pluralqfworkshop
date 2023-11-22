@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getProjects, Project } from "./api/projects";
 import { GetServerSideProps } from 'next';
+import generateAvatar from "github-like-avatar-generator";
 
 import {
   SimpleGrid,
@@ -23,12 +24,15 @@ import {
   Box,
   Center,
   Tooltip,
+  Flex,
+  Avatar,
 } from "@chakra-ui/react";
 
 interface Props {
   projects: Project[];
   budget: number;
   userId: number;
+  age: number;
 }
 
 interface Donation {
@@ -40,24 +44,31 @@ interface Donation {
 interface DonationData {
   id: number;
   amount: number;
-  project_id: number; // この行
+  project_id: number;
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const { user_id, budget } = context.query;
+  const { user_id, budget, age } = context.query;
   const projects = getProjects();
   return {
     props: {
       projects,
       budget: Number(budget),
       userId: Number(user_id),
+      age: Number(age),
     },
   };
 };
 
-export default function Home({ projects = [], budget, userId }: Props) {
+export default function Home({ projects = [], budget, userId, age }: Props) {
+
+  const avatar = generateAvatar({
+    blocks: 6, // must be multiple of two
+    width: 100,
+    seed: userId, // userIdをシードとして使用
+  });
+
   const [remainingBudget, setRemainingBudget] = useState(budget);
-  // const [donations, setDonations] = useState(projects.map(project => ({ id: project.id, amount: 0 })));
   const [submittedDonations, setSubmittedDonations] = useState<Donation[]>([]);
   const [donations, setDonations] = useState(
     projects.map(project => {
@@ -75,7 +86,6 @@ export default function Home({ projects = [], budget, userId }: Props) {
     );
   }, [submittedDonations]);
 
-
   const handleDonationChange = (projectId: number, amount: number) => {
     const newDonations = donations.map(donation =>
       Number(donation.id) === projectId ? { ...donation, amount: amount } : donation
@@ -91,7 +101,6 @@ export default function Home({ projects = [], budget, userId }: Props) {
     setDonations(newDonations);
     setRemainingBudget(budget - totalDonations);
   };
-
 
   useEffect(() => {
     fetch(`/api/user_donations?user_id=${userId}`)
@@ -136,20 +145,6 @@ export default function Home({ projects = [], budget, userId }: Props) {
 
   }, []);
 
-  // const submitDonations = () => {
-  //   const donationData = {
-  //     user_id: userId,
-  //     donations
-  //   };
-
-  //   fetch('/api/submit', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-
-  //     body: JSON.stringify(donationData),
-  //   }).then(response => {
   const submitDonations = () => {
     const method = submittedDonations.length > 0 ? 'PUT' : 'POST';
     const donationData = {
@@ -166,20 +161,6 @@ export default function Home({ projects = [], budget, userId }: Props) {
     }).then(response => {
       if (response.ok) {
         console.log("donationData", donationData);
-        // こんな感じのリクエストを送りたい
-        // {
-        //   "user_id": 1,
-        //     "donations": [
-        //       {
-        //         "id": 1,
-        //         "amount": 10
-        //       },
-        //       {
-        //         "id": 3,
-        //         "amount": 20
-        //       }
-        //     ]
-        // }
         alert('送信成功!');
       } else {
         alert('送信失敗。再度試してください。');
@@ -198,14 +179,24 @@ export default function Home({ projects = [], budget, userId }: Props) {
         </CardHeader>
         <CardBody>
           <Stack divider={<StackDivider />} spacing='4'>
-            <Box>
-              <Heading size='xs' textTransform='uppercase'>User ID</Heading>
-              <Text pt='2' fontSize='sm'>{userId}</Text>
-            </Box>
-            <Box>
-              <Heading size='xs' textTransform='uppercase'>Your Budget</Heading>
-              <Text pt='2' fontSize='sm'>{budget}</Text>
-            </Box>
+            <Flex justifyContent="center">
+              <Avatar src={avatar.base64} />
+            </Flex>
+            {/* <Flex justifyContent="space-between"> */}
+            <Flex justifyContent="space-between">
+              <Box>
+                <Heading size='xs' textTransform='uppercase'>User ID</Heading>
+                <Text pt='2' fontSize='sm'>{userId}</Text>
+              </Box>
+              <Box>
+                <Heading size='xs' textTransform='uppercase'>Your Age</Heading>
+                <Text pt='2' fontSize='sm'>{age}</Text>
+              </Box>
+              <Box>
+                <Heading size='xs' textTransform='uppercase'>Your Budget</Heading>
+                <Text pt='2' fontSize='sm'>{budget}</Text>
+              </Box>
+            </Flex>
             <Box>
               <Heading size='xs' textTransform='uppercase'>Your Remaining Budget</Heading>
               <Text pt='2' fontSize='sm'>{remainingBudget}</Text>
@@ -256,7 +247,6 @@ export default function Home({ projects = [], budget, userId }: Props) {
 
       <Center position="relative" bottom="0" width="100%" p={4} bg="white">
         <Tooltip label="Click to submit your donations" placement="top">
-          {/* {user_id}がすでに寄付しているかに基づいて出しわけ */}
           <Button
             id="submit"
             colorScheme={submittedDonations.length > 0 ? "red" : "blue"}
