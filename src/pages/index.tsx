@@ -149,6 +149,7 @@ export default function Home({ projects = [], budget, userId, age }: Props) {
     const method = submittedDonations.length > 0 ? 'PUT' : 'POST';
     const donationData = {
       user_id: userId,
+      age: age,//age要素を追加
       donations
     };
 
