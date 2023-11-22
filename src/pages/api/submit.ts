@@ -8,18 +8,32 @@ const pool = new Pool({
     }
 });
 
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const { user_id, donations } = req.body;
     console.log("donations", donations, "user_id", user_id);
+
     const client = await pool.connect();
     try {
-        for (const donation of donations) {
-            await client.query('INSERT INTO donations (user_id, project_id, amount) VALUES ($1, $2, $3)', [user_id, donation.id, donation.amount]);
+        if (req.method === 'POST') {
+            // 新規寄付の挿入処理
+            for (const donation of donations) {
+                await client.query('INSERT INTO donations (user_id, project_id, amount) VALUES ($1, $2, $3)', [user_id, donation.id, donation.amount]);
+            }
+            res.status(200).json({ status: 'success' });
+        } else if (req.method === 'PUT') {
+            // 既存寄付の更新処理
+            for (const donation of donations) {
+                await client.query('UPDATE donations SET amount = $1 WHERE user_id = $2 AND project_id = $3', [donation.amount, user_id, donation.id]);
+            }
+            res.status(200).json({ status: 'success' });
+        } else {
+            res.setHeader('Allow', ['POST', 'PUT']);
+            res.status(405).end(`Method ${req.method} Not Allowed`);
         }
-        res.status(200).json({ status: 'success' });
     } catch (error) {
         res.status(500).json({ error: 'サーバーエラーが発生しました' });
     } finally {
