@@ -21,7 +21,6 @@ export default async function handler(
         if (req.method === 'POST') {
             // 新規寄付の挿入処理
             for (const donation of donations) {
-                // await client.query('INSERT INTO donations (user_id, project_id, amount) VALUES ($1, $2, $3)', [user_id, donation.id, donation.amount]);
                 await client.query('INSERT INTO donations (user_id, project_id, amount, age) VALUES ($1, $2, $3, $4)', [user_id, donation.id, donation.amount, age]);
 
             }
@@ -29,7 +28,6 @@ export default async function handler(
         } else if (req.method === 'PUT') {
             // 既存寄付の更新処理
             for (const donation of donations) {
-                // await client.query('UPDATE donations SET amount = $1 WHERE user_id = $2 AND project_id = $3', [donation.amount, user_id, donation.id]);
                 await client.query('UPDATE donations SET amount = $1, age = $2 WHERE user_id = $3 AND project_id = $4', [donation.amount, age, user_id, donation.id]);
             }
             res.status(200).json({ status: 'success' });
