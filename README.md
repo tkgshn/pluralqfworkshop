@@ -1,34 +1,84 @@
-# PluralQF Workshop
+このリポジトリーは、Nov 9(Taipei time: GMT+8)に台湾で開催される[Funding the Commons Taipei](https://fundingthecommons.io/taipei-2023)で[taka (Shuansuke Takagi)](https://twitter.com/0xcommune)がホストする「Anti-Collusion QF Workshop」で利用するWebツールのコードを公開しています。
 
-still in wip
+# Anti-Collusion QF Workshopの概要
 
-## 概要
+このワークショップではQuadratic Funding（QF）という資金分配メカニズムをテーマに、より多次元的かつ談合などにも強いバージョンとしてPlural QFについて紹介します。
 
-この repo は Funding the Commons Taipei で、PluralQF Workshop を行うのに使用するツールです。ワークショップ参加者は当日配布されるペルソナカードに書かれた QR コードをスキャンして、指定された予算を使って公共財プロジェクトに寄付するインタラクティブな体験を提供します。参加者は指定されたそれぞれのペルソナに基づいた予算内で寄付を行い、各プロジェクトへの寄付額は/admin ページ確認できます。
+**導入**
+
+QFについての紹介と、ユースケースについて紹介します。
+
+- QFの概念とその重要性
+- QFを利用した資金分配のメカニズムとその数学的基礎
+- QFの攻撃ベクトル
+ 	- 対策方法
+
+**シュミレーション**
+
+QFとPlural QFの両方を寄付者になりきって体験してもらう。
+
+- 参加者に年齢や趣味、性別...などを記載した[ペルソナカード]を配布する。各カードには「そのペルソナが利用できる額」も書かれている。
+- 仮想の都市を想定し、いくつかの公共財プロジェクトがある中で「（自分が受け取ったカードに書かれている）ペルソナが寄付しそうなもの」をシュミレーションして寄付を行う
+ 	- グループディスカッションをして、参加者がペルソナの視点から意見を述べる
+- 各プロジェクトが得た金額を通常のQF vs Plural QFで比較する
+    - 通常のQF（寄付者のアイデンティティを考慮しない）バージョンの計算
+    - Plural QFとして、年齢でクラスタリングした場合の計算
+            その後、男女で、収入で...などさまざまなクラスタリングが可能
+
+**ディスカッション**
+- 参加者に、シミュレーションの結果に基づいて、どちらの方法がより公平で効果的だと思うかを議論してもらいます。
+- 政治哲学的な観点から、票数と多様性の重要性についての意見を交換します。
+
+**Recap**
+- 参加者と一緒に、どのような状況でそれぞれが有効か、または問題が生じる可能性があるかを議論します。
+- 参加者に、シミュレーションの体験やディスカッションを通じて得た洞察を共有してもらいます。
+- QFとPlural QFを改善するためのアイデアや提案を募集します。
+- QFとPlural QFに関するさらなる研究や実践のためのリソースを提供します
+
+
+# ツールの利用方法
+
+:::note warn
+このツールは対面でのワークショップで利用することを想定しています。
+:::
+
+ワークショップ参加者は当日配布されるペルソナカードに書かれた QR コードをスキャンして、指定された予算を使って公共財プロジェクトに寄付するインタラクティブな体験を提供します。
+
+
 
 ## 機能
 
 - **パラメータ付き URL によるプロファイル設定**: 参加者はペルソナカードに印刷された QR コードをスキャンして、寄付ページにアクセスします。各 QR コードはユニークなパラメータがついていて、それをもとにプロファイルを設定します
 - **寄付シミュレーション**: 参加者は予算内で各プロジェクトに寄付を行い、その額を入力して submit します。
-  - http://localhost:3000/?user_id=2&budget=30
-  - [![Image from Gyazo](https://i.gyazo.com/94e6d4280937eb49cf8a150ee1f4d5ee.png)](https://gyazo.com/94e6d4280937eb49cf8a150ee1f4d5ee)
+  - https://pluralqfworkshop-c03d589f9315.herokuapp.com/?user_id=10&budget=30
+  [![Image from Gyazo](https://i.gyazo.com/b7067014be7bbe793960a4ab68a089e8.png)](https://gyazo.com/b7067014be7bbe793960a4ab68a089e8)
 - **集計ページ**: /admin ページで各プロジェクトの寄付額と参加人数の集計結果を確認できます。
-  - http://localhost:3000/admin.html
-  - [![Image from Gyazo](https://i.gyazo.com/61091b2e25ab7840fb022c1b8aa77e13.png)](https://gyazo.com/61091b2e25ab7840fb022c1b8aa77e13)
+  - https://pluralqfworkshop-c03d589f9315.herokuapp.com/admin
+  [![Image from Gyazo](https://i.gyazo.com/1bc9107ce59749c36a2441da3c0524e3.png)](https://gyazo.com/1bc9107ce59749c36a2441da3c0524e3)
 
 ## 技術スタック
 
-- HTML/TypeScript/JavaScript
-- Node.js
-- Express
-- MarinaDB
+[![Image from Gyazo](https://i.gyazo.com/773a05c8764d8899152bba8b97a3063a.png)](https://gyazo.com/773a05c8764d8899152bba8b97a3063a)
+
+- TypeScript
+- Next.js
+- Postgres
+- Heroku
 
 ## ファイル構成
 
-- [`admin.html`](https://github.com/tkgshn/pluralqfworkshop/blob/main/public/admin.html): 集計ページの HTML ファイル。
-- [`admin.js`](https://github.com/tkgshn/pluralqfworkshop/blob/main/public/admin.js): 集計ページの JavaScript ファイル。
-- [`budgetControl.js`](https://github.com/tkgshn/pluralqfworkshop/blob/main/public/budgetControl.js): 寄付金額の制御を行う JavaScript ファイル。
-- [`submitDonations.js`](https://github.com/tkgshn/pluralqfworkshop/blob/main/public/submitDonations.js): 寄付の送信を行う JavaScript ファイル。
+**API**
+- admin.ts: /adminページを表示するのに使うAPI
+- donate.ts: DBに保存されている寄付データ取得API
+- qf-calclation.ts: QFの計算を行うAPI
+- pluralqf-calclation.ts: Plural QFの計算を行うAPI
+- project.ts: JSONに保存されているプロジェクトデータ取得API
+- user_donations.ts: DBに保存されているユーザーの寄付データ取得API
+
+**Page**
+- admin.tsx: /adminページ
+- index.tsx: 寄付ページ
+
 
 ## ワークショップ当日の使用方法
 
@@ -36,47 +86,47 @@ still in wip
 2. 寄付ページで予算内で寄付を行い、submit ボタンを押します。
 3. 管理者は/admin ページで寄付の集計結果を確認します。
 
+# 開発について
+
+## 環境設定
+
+### ローカル環境にDATABASE_URLを反映する
+Herokuにホストしている場合、DATABASE_URLは時間経過によって変更されます。リモート環境ではHeroku上のConfig Varsに自動的に上書きされますが、ローカル環境では.env.localに手動で上書きする必要があります。
+
+以下のコマンドを使うことで、（ファイルがない場合は）.env.localを生成し、DATABASE_URLを書き込むことができます。
+
+```
 heroku config:get DATABASE_URL -a pluralqfworkshop > .env.local
+```
 
----
+### Heroku CLIを利用してPostgresにログインする
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+```
+heroku pg:psql postgresql-opaque-08560 --app pluralqfworkshop
+```
 
-## Getting Started
+### パッケージのインストール
+```
+npm install
+```
+バージョンが合わない場合は、エラー文をもとにアップデートしてください
 
-First, run the development server:
+### Next.jsの起動
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+この後、[http://localhost:3000](http://localhost:3000)を開くように表示されますが、このURLはパラメータがついてないのでアクセスすると以下のエラーが発生します:
+   >Unhandled Runtime Error
+   > Error: Hydration failed because the initial UI does not match what was rendered on the server.
+   > Warning: Did not expect server HTML to contain the text node "NaN" in .
+   > See more info here: https://nextjs.org/docs/messages/react-hydration-error
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+代わりに、寄付ページ（[http://localhost:3000/?user_id=8&budget=50&age=89](http://localhost:3000/?user_id=8&budget=50&age=89)）や、管理者ページ（[http://localhost:3000/admin](http://localhost:3000/admin)）にアクセスしてください。
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Author
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+twitter: [0xtkgshn](https://twitter.com/0xcommune)
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
