@@ -59,7 +59,7 @@ export default function Admin() {
     }
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/admin`)
+        fetch(`${process.env.HEROKU_APP_URL}/api/admin`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('API request failed');
@@ -72,7 +72,7 @@ export default function Admin() {
             })
             .then(data => {
                 if (data.length > 0) {
-                    return fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/qf-calculation`, {
+                    return fetch(`${process.env.HEROKU_APP_URL}/api/qf-calculation`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export default function Admin() {
             })
             .then(data => {
                 if (data.length > 0) {
-                    return fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/pluralqf-calculation`, {
+                    return fetch(`${process.env.HEROKU_APP_URL}/api/pluralqf-calculation`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

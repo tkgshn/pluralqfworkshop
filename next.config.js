@@ -1,11 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
+const appUrl = process.env.HEROKU_APP_URL || 'http://localhost:3000';
+
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    NEXT_PUBLIC_VERCEL_URL: 'http://localhost:3000',
+    NEXT_PUBLIC_VERCEL_URL: appUrl,
+    HEROKU_APP_URL: process.env.HEROKU_APP_URL,
   },
 }
 
