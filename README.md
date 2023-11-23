@@ -1,8 +1,11 @@
 このリポジトリーは、Nov 9(Taipei time: GMT+8)に台湾で開催される[Funding the Commons Taipei](https://fundingthecommons.io/taipei-2023)で[taka (Shuansuke Takagi)](https://twitter.com/0xcommune)がホストする「Anti-Collusion QF Workshop」で利用するWebツールのコードを公開しています。
 
+[![Image from Gyazo](https://i.gyazo.com/e1431a6f1cbe155d3d508f36d2d0babe.png)](https://gyazo.com/e1431a6f1cbe155d3d508f36d2d0babe)
+
 # Anti-Collusion QF Workshopの概要
 
 このワークショップではQuadratic Funding（QF）という資金分配メカニズムをテーマに、より多次元的かつ談合などにも強いバージョンとしてPlural QFについて紹介します。
+
 
 **導入**
 
