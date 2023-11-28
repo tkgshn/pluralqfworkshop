@@ -1,52 +1,52 @@
 {
     "1": {
         "id": "1",
-        "title": "公園の再開発",
-        "description": "地域の公園を再開発し、子供向けの遊具やピクニックエリアを設置。"
+        "title": "Park Redevelopment",
+        "description": "Redevelop the local park, installing play equipment for children and a picnic area."
     },
     "2": {
         "id": "2",
-        "title": "地域図書館の拡張",
-        "description": "地域図書館を拡張し、新しい書籍やデジタルリソースを提供。"
+        "title": "Expansion of the Community Library",
+        "description": "Expand the community library, providing new books and digital resources."
     },
     "3": {
         "id": "3",
-        "title": "環境保護イニシアティブ",
-        "description": "地域の環境保護活動を支援し、清掃活動や植樹を行う。"
+        "title": "Environmental Protection Initiative",
+        "description": "Support local environmental protection activities, including cleaning and tree planting."
     },
     "4": {
         "id": "4",
-        "title": "地域のアートギャラリー設立",
-        "description": "地元アーティストの作品を展示するアートギャラリーを設立。"
+        "title": "Establishment of a Local Art Gallery",
+        "description": "Establish an art gallery to exhibit works of local artists."
     },
     "5": {
         "id": "5",
-        "title": "高齢者向けレクリエーションセンター",
-        "description": "高齢者のためのレクリエーションセンターを設立し、健康と交流を促進。"
+        "title": "Recreation Center for the Elderly",
+        "description": "Establish a recreation center for the elderly to promote health and social interaction."
     },
     "6": {
         "id": "6",
-        "title": "青少年向けスポーツ施設",
-        "description": "青少年が利用できるスポーツ施設を設立し、健康とチームワークを促進。"
+        "title": "Youth Sports Facility",
+        "description": "Establish a sports facility for youth to promote health and teamwork."
     },
     "7": {
         "id": "7",
-        "title": "地域の歴史博物館",
-        "description": "地域の歴史を紹介する博物館を設立し、教育的な展示を行う。"
+        "title": "Local History Museum",
+        "description": "Establish a museum to introduce the local history with educational exhibits."
     },
     "8": {
         "id": "8",
-        "title": "地域の健康クリニック",
-        "description": "低所得者向けの健康クリニックを設立し、基本的な医療サービスを提供。"
+        "title": "Community Health Clinic",
+        "description": "Establish a health clinic for low-income residents to provide basic medical services."
     },
     "9": {
         "id": "9",
-        "title": "地域交通改善プロジェクト",
-        "description": "地域の交通網を改善し、公共交通のアクセスと安全性を向上。"
+        "title": "Community Traffic Improvement Project",
+        "description": "Improve the local transportation network, enhancing public transit access and safety."
     },
     "10": {
         "id": "10",
-        "title": "地域の教育支援プログラム",
-        "description": "地域の学校に追加の教育資源を提供し、学生の学習機会を拡大。"
+        "title": "Local Education Support Program",
+        "description": "Provide additional educational resources to local schools, expanding learning opportunities for students."
     }
 }
