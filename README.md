@@ -1,3 +1,136 @@
+This repository publishes the code for the web tool used in the "Anti-Collusion QF Workshop" hosted by [taka (Shuansuke Takagi)](https://twitter.com/0xcommune) at [Funding the Commons Taipei](https://fundingthecommons.io/taipei-2023) held in Taiwan on Nov 9 (Taipei time: GMT+8).
+
+<iframe class="speakerdeck-iframe" frameborder="0" src="https://speakerdeck.com/player/e75f6cc5d5a84d318995b00376b37dd4" title="FtC Taipei: Anti-Collusion QF Workshop" allowfullscreen="true" style="border: 0px; background: padding-box padding-box rgba(0, 0, 0, 0.1); margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" data-ratio="1.7777777777777777"></iframe>
+
+# Overview of Anti-Collusion QF Workshop
+
+This workshop introduces Plural QF as a more multidimensional and collusion-resistant version of the funding distribution mechanism known as Quadratic Funding (QF).
+
+**Introduction**
+
+Introduction to QF and its use cases.
+
+- Concept and importance of QF
+- The mechanism of QF for funding distribution and its mathematical foundations
+- Attack vectors on QF
+    - Countermeasures
+
+**Simulation**
+
+Participants experience both QF and Plural QF by role-playing as donors.
+
+- Distribute [Persona Cards] with details like age, hobbies, gender, etc., each having an amount that the persona can use.
+- Simulate donations in a fictional city with various public good projects based on the persona received.
+    - Group discussions for participants to express opinions from the perspective of their persona.
+- Compare the amounts received by each project in regular QF vs Plural QF.
+    - Calculations for regular QF (not considering donor identity).
+    - Calculations for Plural QF, clustering by age, then by gender, income, etc.
+
+**Discussion**
+- Participants discuss which method they think is fairer and more effective based on the simulation results.
+- Exchange opinions on the importance of vote numbers and diversity from a political-philosophical perspective.
+
+**Recap**
+- Discuss with participants where each method is effective or could cause issues.
+- Participants share insights gained through the simulation and discussion.
+- Solicit ideas and proposals for improving QF and Plural QF.
+- Provide resources for further research and practice on QF and Plural QF.
+
+# How to Use the Tool
+
+*This tool is intended for use in face-to-face workshops.*
+
+Workshop participants will scan the QR code printed on the persona cards distributed on the day to offer an interactive experience of donating to public good projects using the specified budget.
+
+## Features
+
+- **Profile setup via URL with parameters**: Participants scan the QR code printed on the persona cards to access the donation page. Each QR code has unique parameters for setting up profiles.
+- **Donation simulation**: Participants make donations within the budget to various projects and submit the amounts.
+  - https://pluralqfworkshop-c03d589f9315.herokuapp.com/?user_id=8&budget=50&age=89
+  [![Image from Gyazo](https://i.gyazo.com/b7067014be7bbe793960a4ab68a089e8.png)](https://gyazo.com/b7067014be7bbe793960a4ab68a089e8)
+- **Aggregation page**: Check the aggregated results of donations and participant numbers on the /admin page.
+  - https://pluralqfworkshop-c03d589f9315.herokuapp.com/admin
+  [![Image from Gyazo](https://i.gyazo.com/1bc9107ce59749c36a2441da3c0524e3.png)](https://gyazo.com/1bc9107ce59749c36a2441da3c0524e3)
+
+## Tech Stack
+
+[![Image from Gyazo](https://i.gyazo.com/773a05c8764d8899152bba8b97a3063a.png)](https://gyazo.com/773a05c8764d8899152bba8b97a3063a)
+
+- TypeScript
+- Next.js
+- Postgres
+- Heroku
+
+## File Structure
+
+**API**
+- admin.ts: API for displaying the /admin page.
+- donate.ts: API for retrieving donation data saved in the DB.
+- qf-calculation.ts: API for performing QF calculations.
+- pluralqf-calculation.ts: API for performing Plural QF calculations.
+- project.ts: API for retrieving project data saved in JSON.
+- user_donations.ts: API for retrieving user donation data saved in the DB.
+
+**Page**
+- admin.tsx: /admin page.
+- index.tsx: Donation page.
+
+Here's the translation of the remaining part of the README into English, maintaining the format:
+
+
+## How to Use on the Day of the Workshop
+
+1. Scan the QR code printed on the persona card.
+2. Make donations within the budget on the donation page and press the submit button.
+3. The administrator can check the aggregated donation results on the /admin page.
+
+
+# About Development
+
+## Environment Setup
+
+### Reflecting DATABASE_URL in the Local Environment
+When hosted on Heroku, the DATABASE_URL changes over time. It is automatically overwritten in the Config Vars on Heroku for remote environments, but needs to be manually overwritten in .env.local for local environments.
+
+Use the following command to generate (if the file doesn't exist) .env.local and write DATABASE_URL into it:
+
+```
+heroku config:get DATABASE_URL -a pluralqfworkshop > .env.local
+```
+
+### (Optional: Login to Postgres using Heroku CLI)
+
+```
+heroku pg:psql postgresql-opaque-08560 --app pluralqfworkshop
+```
+
+### Installing Packages
+```
+npm install
+```
+Update based on the error message if the version doesn't match.
+
+### Starting Next.js
+
+```bash
+npm run dev
+```
+
+After this, you will be prompted to open [http://localhost:3000](http://localhost:3000), but accessing this URL without parameters will result in the following error:
+   >Unhandled Runtime Error
+   > Error: Hydration failed because the initial UI does not match what was rendered on the server.
+   > Warning: Did not expect server HTML to contain the text node "NaN" in .
+   > See more info here: https://nextjs.org/docs/messages/react-hydration-error
+
+Instead, access the donation page ([http://localhost:3000/?user_id=8&budget=50&age=89](http://localhost:3000/?user_id=8&budget=50&age=89)) or the admin page ([http://localhost:3000/admin](http://localhost:3000/admin)).
+
+## Author
+
+twitter: [0xtkgshn](https://twitter.com/0xcommune)
+
+---
+
+
 このリポジトリーは、Nov 9(Taipei time: GMT+8)に台湾で開催される[Funding the Commons Taipei](https://fundingthecommons.io/taipei-2023)で[taka (Shuansuke Takagi)](https://twitter.com/0xcommune)がホストする「Anti-Collusion QF Workshop」で利用するWebツールのコードを公開しています。
 
 [![Image from Gyazo](https://i.gyazo.com/e1431a6f1cbe155d3d508f36d2d0babe.png)](https://gyazo.com/e1431a6f1cbe155d3d508f36d2d0babe)
