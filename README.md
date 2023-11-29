@@ -1,6 +1,6 @@
 This repository publishes the code for the web tool used in the "Anti-Collusion QF Workshop" hosted by [taka (Shuansuke Takagi)](https://twitter.com/0xcommune) at [Funding the Commons Taipei](https://fundingthecommons.io/taipei-2023) held in Taiwan on Nov 9 (Taipei time: GMT+8).
 
-<iframe class="speakerdeck-iframe" frameborder="0" src="https://speakerdeck.com/player/e75f6cc5d5a84d318995b00376b37dd4" title="FtC Taipei: Anti-Collusion QF Workshop" allowfullscreen="true" style="border: 0px; background: padding-box padding-box rgba(0, 0, 0, 0.1); margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" data-ratio="1.7777777777777777"></iframe>
+https://speakerdeck.com/oembed.json\?url=https://speakerdeck.com/tkgshn/ftc-taipei-anti-collusion-qf-workshop
 
 # Overview of Anti-Collusion QF Workshop
 
