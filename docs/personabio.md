@@ -1,3 +1,5 @@
+https://docs.google.com/spreadsheets/d/1c9ZiXMCqjUtLyie9i4Ybn6PT4-vhJx1YmRKkuZE8HJ0/edit#gid=0
+
 23 years old, Tech startup founder who recently experienced an IPO, interested in global warming initiatives.
 40 years old, Part-time worker, relying on partner's income, with 2 children.
 70 years old, Founder of a Football Association, pensioner, interested in sports.
